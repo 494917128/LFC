@@ -61,7 +61,7 @@ let sendNote = (phoneNumbers, params) => {
 	        console.log("response data: ", resData);
 	    }
 	}
-	// 签名参数未提供或者为空时，会使用默认签名发送短信
+	// 签名参数未提供或者为空时，会使用默认签名 发送短信
 	ssender.sendWithParam(86, phoneNumbers, templateId, params, SmsSign, "", "", callback); 
 }
 var timeoutCode
