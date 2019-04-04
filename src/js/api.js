@@ -1,11 +1,12 @@
-﻿var domain = 'localhost'||window.location.host;
-const globalData = {
-	url: 'http://'+domain+':8080/',
-	image_url: 'http://'+domain+':8080/',
+﻿const globalData = {
+	url: 'http://lfc.com/api/v1/',
+	image_url: 'http://lfc.com/api/v1/',
 }
 
 const setItem = (name, val) => { 
-	window.localStorage.setItem("LFC_"+name, val);
+	if (val) {
+		window.localStorage.setItem("LFC_"+name, val);
+	}
 }
 const getItem = (name) => { 
 	return window.localStorage.getItem("LFC_"+name)
@@ -27,19 +28,21 @@ const isNum = (val='') => {
 	return telReg
 }
 
-const request = ({method='post', url, type='json', data={}, success, fail}) => {
+const request = ({ method = 'post', url, type = 'json', data = { }, success, fail }) => {
+	var access_token = getItem('access_token') || ''
+
 	axios({
 	  method,
-	  url: globalData.url + url,
+	  url: globalData.url + url + '?access-token=' + access_token,
 	  headers: {
 	    'Content-Type': type=='form'?'application/x-www-form-urlencoded;charset=UTF-8':'application/json;charset=UTF-8'
 	  },
 	  data
 	}).then(function (response) {
-		if (response.data.state == 0) {
-			alert(response.data.msg || '错误')
-		} else {
+		if (response.data.code == 0 || response.data.code == 200) {
 			success && success(response.data)
+		} else {
+			alert(response.data.message || '错误')
 		}
 	}).catch(function (error) {
 		fail && fail(error);

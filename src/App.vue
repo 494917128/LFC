@@ -33,12 +33,12 @@ export default {
           login_should = this.$router.login_should,
           admin_path   = this.$router.admin_path
       login_path.map((item, index) => { 
-      	if (name == item && api.getItem('userId')) { 
+      	if (name == item && api.getItem('access_token')) { 
       		_this.$router.href('index')
       	}
       })
       login_should.map((item, index) => { 
-        if (name == item && !api.getItem('userId')) { 
+        if (name == item && !api.getItem('access_token')) { 
           _this.$router.href('login')
         }
       })

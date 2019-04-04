@@ -104,12 +104,12 @@ export default {
       } else {
         api.request({
           method: 'post',
-          url: 'getCode',
+          url: 'user/get-code',
           data: {
             mobile: this.mobile
           },
           success(res){
-            alert(res.msg)
+            alert(res.message)
             
             // 60秒倒计时
             _this.count_down = 60
@@ -135,15 +135,15 @@ export default {
       if (boolean) {
         api.request({
           method: 'post',
-          url: 'register',
+          url: 'user/register',
           data: {
-            name: this.name,
-            mobile: this.mobile,
+            nickname: this.name,
+            username: this.mobile,
             password: this.password,
             code: this.code
           },
           success(res){
-            alert(res.msg)
+            alert(res.message)
             _this.$router.href('login?mobile='+_this.mobile);
           },
         })

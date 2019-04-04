@@ -7,11 +7,11 @@
 
       <div class="account-info">
         <a class="photo">
-          <img :src="userInfo.user_image?image_url+userInfo.user_image:'@/images/default.png'">
+          <img :src="userInfo.user_image||'@/images/default.png'">
           <input type="file" @change="uploadImage" accept="image/gif,image/jpeg,image/png,image/jpg">
         </a>
         <h5 class="name">
-          {{userInfo.user_name || '匿名'}}
+          {{userInfo.nickname || '匿名'}}
           <a class="iconfont icon-bianji" @click="update('name')"></a>
         </h5>
         <p class="text">
@@ -161,8 +161,7 @@ export default {
       modal_show: false,
       modal_title: '',
 
-imgs: [],
-
+      imgs: [],
 
     }
   },
@@ -237,7 +236,7 @@ imgs: [],
       } else {
         api.request({
           method: 'post',
-          url: 'getCode',
+          url: 'code/getCode',
           data: {
             mobile: this.mobile
           },
@@ -312,7 +311,7 @@ imgs: [],
     updateUserInfo(data){
       var _this = this
       api.request({
-        url: 'updateUserInfo',
+        url: 'user/update-info',
         data: data,
         success (res) {
           console.log(res.data)
@@ -325,7 +324,8 @@ imgs: [],
       })
     },
     logout () {
-      api.removeItem('userId')
+      api.removeItem('access_token')
+      api.removeItem('refresh_token')
       this.$router.href('login')
     },
     collect (){
@@ -334,13 +334,11 @@ imgs: [],
     getUserInfo(){
       var _this = this
       api.request({
-        url: 'getUserInfo',
-        data: {
-          user_id: this.user_id
-        },
+        url: 'user/info',
+        data: { },
         success (res) {
           _this.userInfo = res.data
-          _this.name = res.data.user_name
+          _this.name = res.data.nickname
           console.log(res.data)
         }
       })
@@ -370,7 +368,6 @@ imgs: [],
     },
   },
   mounted () { 
-    this.user_id = api.getItem('userId')
     this.getUserInfo()
     this.getOrderList()
   },

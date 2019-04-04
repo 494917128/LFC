@@ -86,14 +86,16 @@ export default {
       if (boolean) {
         api.request({
           method: 'post',
-          url: 'login',
+          url: 'user/login',
           data: {
-            mobile: this.mobile,
-            password: this.password
+            username: this.mobile,
+            password: this.password,
+            group: 'app',
           },
           success(res){
-            alert(res.msg)
-            api.setItem("userId", res.data.user_id);
+            alert('登录成功')
+            api.setItem("access_token", res.data.access_token);
+            api.setItem("refresh_token", res.data.refresh_token);
             _this.$router.href('index')
           },
         })
