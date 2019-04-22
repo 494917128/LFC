@@ -103,10 +103,9 @@ export default {
         this.mobile_prompt = '手机号码格式错误'
       } else {
         api.request({
-          method: 'post',
-          url: 'user/get-code',
+          url: 'auth/getCode',
           data: {
-            mobile: this.mobile
+            phone: this.mobile
           },
           success(res){
             alert(res.message)
@@ -135,12 +134,14 @@ export default {
       if (boolean) {
         api.request({
           method: 'post',
-          url: 'user/register',
+          url: 'auth/addRegister',
           data: {
-            nickname: this.name,
-            username: this.mobile,
+            phone: this.name,
+            code: this.code,
             password: this.password,
-            code: this.code
+            username: this.mobile,
+            role: 'user',
+            registerFrom: '1',
           },
           success(res){
             alert(res.message)

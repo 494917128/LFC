@@ -1,5 +1,5 @@
 ﻿const globalData = {
-	url: 'http://lfc.com/api/v1/',
+	url: 'http://132.232.15.225:8080/lfc-ht/',
 	image_url: 'http://lfc.com/api/v1/',
 }
 
@@ -28,16 +28,38 @@ const isNum = (val='') => {
 	return telReg
 }
 
-const request = ({ method = 'post', url, type = 'json', data = { }, success, fail }) => {
+const request = ({ method = 'get', url, type = 'form', data = { }, params = { }, success, fail }) => {
 	var access_token = getItem('access_token') || ''
+	if (access_token) {
+		url = url + '?access-token=' + access_token
+	}
+
+	if (method === 'get') {
+		params = data
+		data = { }
+	}
 
 	axios({
 	  method,
-	  url: globalData.url + url + '?access-token=' + access_token,
+	  url: globalData.url + url,
 	  headers: {
-	    'Content-Type': type=='form'?'application/x-www-form-urlencoded;charset=UTF-8':'application/json;charset=UTF-8'
+	    'Content-Type': type=='json'?'application/json':'application/x-www-form-urlencoded'
 	  },
-	  data
+	  params: params,
+	  data: data,
+      transformRequest: [function (data) {
+        let ret = '',
+        	i = 0
+        for (let it in data) {
+          if (i === 0) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it])
+          } else {
+            ret += '&' + encodeURIComponent(it) + '=' + encodeURIComponent(data[it])
+          }
+          i++
+        }
+        return ret
+      }],
 	}).then(function (response) {
 		if (response.data.code == 0 || response.data.code == 200) {
 			success && success(response.data)
