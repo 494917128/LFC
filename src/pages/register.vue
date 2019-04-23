@@ -136,10 +136,10 @@ export default {
           method: 'post',
           url: 'auth/addRegister',
           data: {
-            phone: this.name,
-            code: this.code,
+            phone: this.mobile,
+            verifyCode: this.code,
             password: this.password,
-            username: this.mobile,
+            username: this.name,
             role: 'user',
             registerFrom: '1',
           },
